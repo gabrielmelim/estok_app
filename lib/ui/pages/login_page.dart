@@ -105,6 +105,7 @@ class _LoginPageState extends State<LoginPage> with LoginValidator {
                     child: SizedBox(
                       height: 40,
                       child: RaisedButton(
+                        elevation: 0,
                         onPressed: (){
                           _loginOnPressed(context);
                         },
