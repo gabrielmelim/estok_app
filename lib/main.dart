@@ -1,4 +1,5 @@
 import 'package:estok_app/models/usuario_model.dart';
+import 'package:estok_app/ui/pages/home_page.dart';
 import 'package:estok_app/ui/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -28,7 +29,8 @@ class _MyAppState extends State<MyApp> {
           fontFamily: "Montserrat",
         ),
         debugShowCheckedModeBanner: false,
-        home: LoginPage(),
+        home: HomePage(),
+        //home: LoginPage(),
       ),
     );
   }

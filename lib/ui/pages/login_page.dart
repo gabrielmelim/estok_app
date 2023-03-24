@@ -1,7 +1,9 @@
 
 import 'package:estok_app/models/usuario_model.dart';
+import 'package:estok_app/ui/pages/home_page.dart';
 import 'package:estok_app/ui/validator/login_validator.dart';
 import 'package:estok_app/ui/widgets/custom_text_form_field.dart';
+import 'package:estok_app/ui/widgets/message.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -135,23 +137,25 @@ class _LoginPageState extends State<LoginPage> with LoginValidator {
     print("Senha ${_senhaController.text}");
     UsuarioModel.of(context).login(_emailController.text, _senhaController.text,
       onSuccess: (){
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text('Usuário logado com sucesso'),
-            backgroundColor: Theme.of(context).accentColor,
-            duration: Duration(seconds: 2),
-        ));
+      Message.onSuccess(
+          scaffoldKey: _scaffoldKey,
+          message: 'Usuário logado com sucesso',
+          seconds: 2,
+          onPop: (value){
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context){
+              return HomePage();
+            }));
+          }
+      );
         return;
       },
       onFail: (String message){
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text(message),
-          backgroundColor: Colors.red[800],
-          duration: Duration(seconds: 3),
-        ));
+        Message.onFail(
+            scaffoldKey: _scaffoldKey,
+            message: message,
+        );
         return;
       }
     );
-
-
   }
 }
