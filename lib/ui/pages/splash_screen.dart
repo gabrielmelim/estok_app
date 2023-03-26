@@ -1,3 +1,5 @@
+import 'package:estok_app/ui/pages/cadastro_produto.dart';
+import 'package:estok_app/ui/pages/home_page.dart';
 import 'package:estok_app/ui/pages/login_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +15,8 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginPage()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => CadastroProdutoPage()));
     });
   }
 

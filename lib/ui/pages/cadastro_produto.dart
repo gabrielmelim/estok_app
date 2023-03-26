@@ -1,3 +1,4 @@
+import 'package:estok_app/ui/pages/home_page.dart';
 import 'package:estok_app/ui/widgets/custom_text_form_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,26 @@ class _CadastroProdutoPageState extends State<CadastroProdutoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return HomePage();
+            }));
+          },
+          color: Color.fromRGBO(88, 53, 94, 1),
+        ),
+        title: Text(
+          "NOVO PRODUTO",
+          style: TextStyle(
+              color: Color.fromRGBO(88, 53, 94, 1),
+              fontWeight: FontWeight.w600),
+        ),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(247, 242, 248, 1),
+      ),
       key: _scaffoldKey,
       body: Form(
         key: _formKey,
@@ -30,7 +51,7 @@ class _CadastroProdutoPageState extends State<CadastroProdutoPage> {
           padding: const EdgeInsets.all(21),
           children: [
             Padding(
-                padding: const EdgeInsets.only(bottom: 8, top: 21),
+                padding: const EdgeInsets.only(bottom: 8, top: 30),
                 child: Text(
                   "Nome",
                   style: TextStyle(fontSize: 18),

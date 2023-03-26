@@ -23,7 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.focusNode,
     this.requestFocus,
-    this.maxLines = 0,
+    this.maxLines = 1,
     this.validator,
     this.inputFormatters,
   });
@@ -34,7 +34,7 @@ class CustomTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
-          maxLines: this.maxLines > 0 ? this.maxLines : 1,
+          maxLines: this.maxLines > 1 ? this.maxLines : 1,
           controller: this.controller,
           keyboardType: this.keyboardType,
           focusNode: this.focusNode,
