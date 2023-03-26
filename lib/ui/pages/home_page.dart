@@ -59,10 +59,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           // Container(color: Colors.amber),
           // Container(color: Colors.blue),
 
-          HomeTab('TODOS'),
-          HomeTab('Em estoque'),
-          HomeTab('Em aviso'),
-          HomeTab('Em falta'),
+          HomeTab('TODOS',),
+          HomeTab('Em estoque',),
+          HomeTab('Em aviso',),
+          HomeTab('Em falta',),
         ],
       ),
       drawer: SafeArea(

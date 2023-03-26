@@ -1,14 +1,16 @@
+import 'package:estok_app/ui/pages/login_page.dart';
 import 'package:flutter/material.dart';
 
 class HomeTab extends StatefulWidget {
   final String tipo;
-  HomeTab(this.tipo);
+  HomeTab(this.tipo,);
 
   @override
   _HomeTabState createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
+  int tabIndex;
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -50,6 +52,7 @@ class _HomeTabState extends State<HomeTab> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+
                     Text(
                       'TESTE',
                       style: TextStyle(
@@ -83,9 +86,25 @@ class _HomeTabState extends State<HomeTab> {
           ),
         ],
         currentIndex: _selectedIndex,
+
+        onTap: (int index){
+          _onItemTapped(index);
+          print(tabIndex);
+          if(index == 0){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+            );
+          }if(index == 1){
+
+          }if(index == 2){
+
+          }
+        },
+
         selectedItemColor: Color.fromRGBO(88, 53, 94, 1),
         backgroundColor: Color.fromRGBO(246, 245, 245, 1),
-        onTap: _onItemTapped,
+
       ),
       floatingActionButton: Container(
         padding: EdgeInsets.only(bottom: 26),
