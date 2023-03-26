@@ -1,4 +1,5 @@
 import 'package:estok_app/models/usuario_model.dart';
+import 'package:estok_app/ui/tabs/home_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -53,10 +54,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       body: TabBarView(
         controller: _tabController,
         children: [
-          Container(color: Colors.grey),
-          Container(color: Colors.red),
-          Container(color: Colors.amber),
-          Container(color: Colors.blue),
+          // Container(color: Colors.grey),
+          // Container(color: Colors.red),
+          // Container(color: Colors.amber),
+          // Container(color: Colors.blue),
+
+          HomeTab('TODOS'),
+          HomeTab('Em estoque'),
+          HomeTab('Em aviso'),
+          HomeTab('Em falta'),
         ],
       ),
       drawer: SafeArea(
