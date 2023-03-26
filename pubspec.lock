@@ -44,7 +44,7 @@ packages:
     source: hosted
     version: "1.15.0-nullsafety.3"
   cupertino_icons:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
@@ -68,7 +68,7 @@ packages:
     source: sdk
     version: "0.0.0"
   http:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -110,7 +110,7 @@ packages:
     source: hosted
     version: "1.9.2"
   scoped_model:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: scoped_model
       url: "https://pub.dartlang.org"
