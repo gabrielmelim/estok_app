@@ -1,5 +1,6 @@
 import 'package:estok_app/models/usuario_model.dart';
 import 'package:estok_app/ui/pages/cadastro_produto.dart';
+import 'package:estok_app/ui/pages/home_page.dart';
 import 'package:estok_app/ui/pages/login_page.dart';
 import 'package:estok_app/ui/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
