@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 
 class HomeTab extends StatefulWidget {
   final String tipo;
-  HomeTab(this.tipo,);
+
+  HomeTab(this.tipo);
 
   @override
   _HomeTabState createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
-  int tabIndex;
+  String tipo;
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -21,6 +22,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    String tipo = widget.tipo;
     return Scaffold(
       body: ListView.builder(
         padding: EdgeInsets.only(top: 38),
@@ -40,7 +42,8 @@ class _HomeTabState extends State<HomeTab> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 12, left: 22, right: 180),
+                      padding:
+                          const EdgeInsets.only(top: 12, left: 22, right: 180),
                       child: Text(
                         'BEBIDAS HEINEKEN',
                         style: TextStyle(
@@ -52,7 +55,6 @@ class _HomeTabState extends State<HomeTab> {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-
                     Text(
                       'TESTE',
                       style: TextStyle(
@@ -86,30 +88,25 @@ class _HomeTabState extends State<HomeTab> {
           ),
         ],
         currentIndex: _selectedIndex,
-
-        onTap: (int index){
+        onTap: (int index) {
           _onItemTapped(index);
-          print(tabIndex);
-          if(index == 0){
+          print(tipo);
+          if (index == 0) {
             Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
             );
-          }if(index == 1){
-
-          }if(index == 2){
-
           }
+          if (index == 1) {}
+          if (index == 2) {}
         },
-
         selectedItemColor: Color.fromRGBO(88, 53, 94, 1),
         backgroundColor: Color.fromRGBO(246, 245, 245, 1),
-
       ),
       floatingActionButton: Container(
         padding: EdgeInsets.only(bottom: 26),
         child: FloatingActionButton(
-          onPressed: (){},
+          onPressed: () {},
           tooltip: 'Add',
           child: Icon(Icons.add),
           backgroundColor: Color.fromRGBO(88, 53, 94, 1),
@@ -119,4 +116,3 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 }
-
