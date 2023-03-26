@@ -34,9 +34,15 @@ class _MyAppState extends State<MyApp> {
         title: "ESTOK APP",
         theme: ThemeData(
           fontFamily: "Montserrat",
+
+          tabBarTheme: TabBarTheme(
+            labelColor: Color.fromRGBO(88, 53, 94, 1),
+            unselectedLabelColor: Color.fromRGBO(144, 159, 173, 1),
+          ),
         ),
         debugShowCheckedModeBanner: false,
-        home: CadastroEstoquePage(),
+        home: HomePage(),
+        // home: LoginPage(),
       ),
     );
   }
