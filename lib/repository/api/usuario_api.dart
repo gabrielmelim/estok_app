@@ -8,36 +8,43 @@ class UsuarioApi{
   UsuarioApi._();
 
   Future<Usuario> signIn(String username, String password) async{
+    try{
+      var encodeString = {
+        "email": username,
+        "senha": password
+      };
 
-    var encodeString = {
-      "email": username,
-      "senha": password
-    };
+      var encode = json.encode(encodeString);
+      String url = 'http://54.90.203.92/auth/login';
+      print("LOG[UsuarioAPI.signIn] - url $url");
+      print("LOG[UsuarioAPI.signIn] - encode $encode");
 
-    var encode = json.encode(encodeString);
-    String url = 'http://54.90.203.92/auth/login';
-    print("LOG[UsuarioAPI.signIn] - url $url");
-    print("LOG[UsuarioAPI.signIn] - encode $encode");
-
-    var response = await http.post(url,
-      headers: {'Content-Type': 'application/json'},
-      body: encode,
-    );
-
-
-    if(response.statusCode == 200){
-      var responseData = json.decode(utf8.decode(response.bodyBytes));
-      print("LOG[UsuarioAPI.signIn] - responseData $responseData");
-
-      Usuario usuario = Usuario.fromJson(responseData['data']);
-      print(usuario.toJson());
-      print("LOG[UsuarioAPI.signIn] - usuario $usuario");
+      var response = await http.post(url,
+        headers: {'Content-Type': 'application/json'},
+        body: encode,
+      );
 
 
-      return usuario;
+      if(response.statusCode == 200){
+        var responseData = json.decode(utf8.decode(response.bodyBytes));
+        print("LOG[UsuarioAPI.signIn] - responseData $responseData");
 
-    }else{
+        Usuario usuario = Usuario.fromJson(responseData['data']);
+        print(usuario.toJson());
+        print("LOG[UsuarioAPI.signIn] - usuario $usuario");
+
+
+        return usuario;
+
+      }else{
+        return null;
+      }
+
+
+    } on Exception catch(error){
+      print("LOG[UsuarioAPI.signIn] - error: $error");
       return null;
+
     }
 
   }
