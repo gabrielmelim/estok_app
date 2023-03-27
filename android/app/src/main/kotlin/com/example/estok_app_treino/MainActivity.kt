@@ -1,4 +1,4 @@
-package com.example.estok_app
+package com.example.estok_app_treino
 
 import io.flutter.embedding.android.FlutterActivity
 
