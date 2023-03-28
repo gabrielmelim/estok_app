@@ -15,8 +15,8 @@ class EstoqueModel extends Model{
     notifyListeners();
   }
 
-  Future<void> fetch() async {
-    futureEstoques = EstoqueApi.instance.getAll();
+  Future<void> fetch(String tipo) async {
+    futureEstoques = EstoqueApi.instance.getAll(tipo);
 
     setState();
   }

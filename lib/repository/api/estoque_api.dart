@@ -7,13 +7,14 @@ class EstoqueApi{
   static final EstoqueApi instance =  EstoqueApi._();
   EstoqueApi._();
 
-  Future<List<Estoque>> getAll() async{
+  Future<List<Estoque>> getAll(String tipo) async{
     List<Estoque> estoques;
-
+    print('tipo: ${tipo.toUpperCase()}');
     try{
 
+
       String url = 'http://54.90.203.92/estoques';
-      String authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzk4NzM3MzAsInN1YiI6IjIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0In0.1VGGUrkt5fNuU6aQDtqbHcLAz0lvTkUNvfh9DBexXrs';
+      String authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzk5NjU3MTgsInN1YiI6IjIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0In0.j5siXWa-yIHUjykaCudqr7iMGsaJs_Vx-ylntZOrDJQ';
       print("LOG[EstoqueAPI.getAll] - url $url");
 
       var response = await http.get(url,
@@ -31,6 +32,13 @@ class EstoqueApi{
       estoques = (data as List)?.map((json){
         return Estoque.fromJson(json as Map<String, dynamic>);
       })?.toList();
+
+      print(estoques);
+      // if (tipo != "TODOS") {
+      //   estoques = estoques.where((estoque) => estoque.status_estoque == tipo.toUpperCase()).toList();
+      //   print('estoque filtrado: $estoques');
+      // }
+
       return estoques;
 
     }on Exception catch(error){
