@@ -1,8 +1,11 @@
+import 'package:estok_app/models/produto_model.dart';
 import 'package:estok_app/ui/pages/home_page.dart';
 import 'package:estok_app/ui/widgets/custom_text_form_field.dart';
+import 'package:estok_app/ui/widgets/message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class CadastroProdutoPage extends StatefulWidget {
   @override
@@ -14,10 +17,20 @@ class _CadastroProdutoPageState extends State<CadastroProdutoPage> {
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
   final _descricaoController = TextEditingController();
-  final _valorItemController = TextEditingController();
-  final _valorUnitarioController = TextEditingController();
   final _quantidadeController = TextEditingController();
   final _siteController = TextEditingController();
+
+  final valorItemController = new MoneyMaskedTextController(
+    decimalSeparator: '.',
+    thousandSeparator: ',',
+    leftSymbol: 'R\$ ',
+  );
+
+  final valorUnitarioController = new MoneyMaskedTextController(
+    decimalSeparator: '.',
+    thousandSeparator: ',',
+    leftSymbol: 'R\$ ',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +93,8 @@ class _CadastroProdutoPageState extends State<CadastroProdutoPage> {
                   style: TextStyle(fontSize: 18),
                 )),
             CustomTextFormField(
-              controller: _valorItemController,
+              controller: valorItemController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [],
               hintText: "R\$ 45,00",
             ),
             Padding(
@@ -92,9 +104,8 @@ class _CadastroProdutoPageState extends State<CadastroProdutoPage> {
                   style: TextStyle(fontSize: 18),
                 )),
             CustomTextFormField(
-              controller: _valorUnitarioController,
+              controller: valorUnitarioController,
               keyboardType: TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [],
               hintText: "R\$ 7,50",
             ),
             Padding(
@@ -125,7 +136,9 @@ class _CadastroProdutoPageState extends State<CadastroProdutoPage> {
                 height: 40,
                 child: RaisedButton(
                   elevation: 0,
-                  onPressed: () {},
+                  onPressed: () {
+                    _cadastrarOnPressed(context);
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0)),
                   color: Color.fromRGBO(247, 242, 248, 1),
@@ -138,5 +151,40 @@ class _CadastroProdutoPageState extends State<CadastroProdutoPage> {
         )),
       ),
     );
+  }
+
+  void _cadastrarOnPressed(BuildContext context) {
+    FocusScope.of(context).unfocus();
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    print(valorItemController.numberValue);
+
+    ProdutoModel.of(context).cadastrar(
+        _nomeController.text,
+        _descricaoController.text,
+        valorItemController.numberValue,
+        valorUnitarioController.numberValue,
+        int.parse(_quantidadeController.text),
+        _siteController.text, onSuccess: () {
+      Message.onSuccess(
+          scaffoldKey: _scaffoldKey,
+          message: 'Estoque criado com sucesso',
+          seconds: 2,
+          onPop: (value) {
+            // Navigator.of(context).pushReplacement(
+            //     MaterialPageRoute(builder: (BuildContext context) {
+            //   return HomePage();
+            // }));
+          });
+      return;
+    }, onFail: (String message) {
+      Message.onFail(
+        scaffoldKey: _scaffoldKey,
+        message: message,
+      );
+      return;
+    });
   }
 }

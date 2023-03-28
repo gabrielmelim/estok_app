@@ -8,17 +8,19 @@ import 'package:estok_app/ui/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+import 'models/produto_model.dart';
+
 void main() {
-  runApp(MyApp(EstoqueModel()));
+  runApp(MyApp(ProdutoModel()));
 }
 
 class MyApp extends StatefulWidget {
   // final UsuarioModel usuarioScopedModel;
-  final EstoqueModel estoqueScopedModel;
+  final ProdutoModel produtoScopedModel;
 
   MyApp(
     // this.usuarioScopedModel,
-    this.estoqueScopedModel,
+    this.produtoScopedModel,
   );
 
   @override
@@ -29,19 +31,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ScopedModel(
-      model: widget.estoqueScopedModel,
+      model: widget.produtoScopedModel,
       child: MaterialApp(
         title: "ESTOK APP",
         theme: ThemeData(
           fontFamily: "Montserrat",
-
           tabBarTheme: TabBarTheme(
             labelColor: Color.fromRGBO(88, 53, 94, 1),
             unselectedLabelColor: Color.fromRGBO(144, 159, 173, 1),
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: HomePage(),
+        home: CadastroEstoquePage(),
         // home: LoginPage(),
       ),
     );

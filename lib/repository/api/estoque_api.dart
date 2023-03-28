@@ -1,45 +1,43 @@
 import 'dart:convert';
-
-import 'package:estok_app/entities/estoque.dart';
 import 'package:http/http.dart' as http;
 
 class EstoqueApi {
   static final EstoqueApi instance = EstoqueApi._();
   EstoqueApi._();
 
-  Future<Estoque> listar() async {
-    String url = 'http://54.90.203.92/estoques';
-    String token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzk4MDE5NDQsInN1YiI6IjIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0In0.cUhN8dLW4EqjRIxY4Hu3eDSDGWgx0fPsfXYP5phwREw";
+  Future<bool> cadastrar(String descricao, String dataEntrada,
+      String dataValidade, String tipo) async {
+    try {
+      String url = 'http://54.90.203.92/estoques';
+      String token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Nzk5NTY5NzksInN1YiI6IjIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0In0.WxnfP13OUVz357uGL6472y-3lepe21G3UygyDUcgEto";
 
-    print("LOG[EstoqueApi] - url $url");
-    print("LOG[EstoqueApi] - token $token");
+      var encodeString = {
+        "descricao": descricao,
+        "data_entrada": dataEntrada,
+        "data_validade": dataValidade,
+        "tipo": tipo
+      };
 
-    var response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
-      },
-    );
+      print('EncodeString: $encodeString');
 
-    if (response.statusCode == 200) {
-      var responseData = json.decode(utf8.decode(response.bodyBytes));
+      var encode = json.encode(encodeString);
 
-      List<dynamic> data = responseData['data'];
+      var response = await http.post(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: encode);
 
-      print("LOG[EstoqueApi] - data $data");
+      if (response.statusCode != 200) {
+        print('deu ruim');
+        return false;
+      }
 
-      Map<String, dynamic> map = {};
-      Estoque estoque;
-      final mapped = data.map((element) => Estoque.fromJson(element));
-
-      print(estoque.toJson());
-      print("LOG[EstoqueApi] - usuario $estoque");
-
-      return estoque;
-    } else {
-      return null;
+      return true;
+    } on Exception catch (erro) {
+      print('LOG[EstoqueAPI.cadastrar] - erro $erro');
     }
   }
 }

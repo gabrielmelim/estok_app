@@ -1,7 +1,10 @@
 import 'package:estok_app/models/estoque_model.dart';
+import 'package:estok_app/ui/pages/home_page.dart';
 import 'package:estok_app/ui/widgets/custom_text_form_field.dart';
 import 'package:estok_app/ui/widgets/message.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class CadastroEstoquePage extends StatefulWidget {
   @override
@@ -12,11 +15,13 @@ class _CadastroEstoquePageState extends State<CadastroEstoquePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   final _descricaoController = TextEditingController();
-  final _dataDeEntradaController = TextEditingController();
-  final _dataDeValidadeController = TextEditingController();
-  final _tipoController = TextEditingController();
+  final dataDeEntradaController = MaskedTextController(mask: '00/00/0000');
+  final dataDeValidadeController = MaskedTextController(mask: '00/00/0000');
 
-  List<String> _options = ['CAIXA', 'GRADE', 'Opção 3'];
+  List<String> _options = ["Pacote", "Grade", "Caixa"];
+  final FocusNode _focusDataEntrada = FocusNode();
+  final FocusNode _focusDataValidade = FocusNode();
+  final FocusNode _focusTipo = FocusNode();
   String _selectedOption;
 
   @override
@@ -56,6 +61,7 @@ class _CadastroEstoquePageState extends State<CadastroEstoquePage> {
                     style: TextStyle(fontSize: 18),
                   )),
               CustomTextFormField(
+                requestFocus: _focusDataEntrada,
                 controller: _descricaoController,
                 keyboardType: TextInputType.text,
                 hintText: "Descrição do estoque",
@@ -76,8 +82,10 @@ class _CadastroEstoquePageState extends State<CadastroEstoquePage> {
                           ),
                         ),
                         CustomTextFormField(
-                          controller: _dataDeEntradaController,
-                          keyboardType: TextInputType.text,
+                          requestFocus: _focusDataValidade,
+                          focusNode: _focusDataEntrada,
+                          controller: dataDeEntradaController,
+                          keyboardType: TextInputType.datetime,
                           hintText: "12/12/2012",
                         ),
                       ],
@@ -95,8 +103,10 @@ class _CadastroEstoquePageState extends State<CadastroEstoquePage> {
                           ),
                         ),
                         CustomTextFormField(
-                          controller: _dataDeValidadeController,
-                          keyboardType: TextInputType.text,
+                          requestFocus: _focusTipo,
+                          focusNode: _focusDataValidade,
+                          controller: dataDeValidadeController,
+                          keyboardType: TextInputType.datetime,
                           hintText: "12/12/2012",
                         ),
                       ],
@@ -120,19 +130,8 @@ class _CadastroEstoquePageState extends State<CadastroEstoquePage> {
                     width: 1,
                   ),
                 ),
-                // InputDecorator(
-                //   textAlign: TextAlign.center,
-                //   decoration: InputDecoration(
-                //     contentPadding: EdgeInsets.symmetric(horizontal: 25),
-                //     border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(15),
-                //         borderSide: BorderSide(
-                //           color: Color.fromRGBO(88, 53, 94, 1),
-                //           width: 1.0,
-                //         )),
-                //   ),
                 child: DropdownButton<String>(
-                  // isExpanded: true,
+                  focusNode: _focusTipo,
                   style: TextStyle(
                     color: Colors.black,
                     fontFamily: 'Montserrat',
@@ -184,24 +183,47 @@ class _CadastroEstoquePageState extends State<CadastroEstoquePage> {
   }
 
   void _cadastrarOnPressed(BuildContext context) {
-    // FocusScope.of(context).unfocus();
-    // if (!_formKey.currentState.validate()) {
-    //   return;
-    // }
-    print("Descrição ${_descricaoController.text}");
-    print("Data entrada ${_dataDeEntradaController.text}");
-    print("Data validade ${_dataDeValidadeController.text}");
-    print("Tipo ${_tipoController.text}");
-
-     EstoqueModel.of(context).listar(onSuccess: () {
-      Message.onSuccess(
-        scaffoldKey: _scaffoldKey,
-        message: 'Usuário logado com sucesso',
-        seconds: 2,
-      );
+    FocusScope.of(context).unfocus();
+    if (!_formKey.currentState.validate()) {
       return;
     }
-        // _descricaoController.text, _dataDeValidadeController.text, _dataDeEntradaController.text, _tipoController.text
-        );
+
+    String converteDataFormatadaParaString(DateTime date) {
+      date = DateTime.utc(date.year, date.month, date.day, 12);
+      return DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS').format(date);
+    }
+
+    DateTime dataEntrada =
+        DateFormat('dd/MM/yyyy').parse(dataDeEntradaController.text);
+    DateTime dataValidade =
+        DateFormat('dd/MM/yyyy').parse(dataDeValidadeController.text);
+
+    String formattedDataEntrada = converteDataFormatadaParaString(dataEntrada);
+    String formattedDataValidade =
+        converteDataFormatadaParaString(dataValidade);
+
+    EstoqueModel.of(context).cadastrar(
+        _descricaoController.text,
+        formattedDataEntrada,
+        formattedDataValidade,
+        _selectedOption, onSuccess: () {
+      Message.onSuccess(
+          scaffoldKey: _scaffoldKey,
+          message: 'Estoque criado com sucesso',
+          seconds: 2,
+          onPop: (value) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) {
+              return HomePage();
+            }));
+          });
+      return;
+    }, onFail: (String message) {
+      Message.onFail(
+        scaffoldKey: _scaffoldKey,
+        message: message,
+      );
+      return;
+    });
   }
 }

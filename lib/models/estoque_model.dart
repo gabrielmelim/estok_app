@@ -4,21 +4,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class EstoqueModel extends Model {
-  Estoque estoque;
+  bool estoque;
 
   static EstoqueModel of(BuildContext context) {
     return ScopedModel.of<EstoqueModel>(context);
   }
 
-  void listar(
+  void cadastrar(
+      String descricao, String dataEntrada, String dataValidade, String tipo,
       {VoidCallback onSuccess, VoidCallback onFail(String Message)}) async {
-    estoque = await EstoqueApi.instance.listar();
+    estoque = await EstoqueApi.instance
+        .cadastrar(descricao, dataEntrada, dataValidade, tipo);
 
-    if (estoque != null) {
-      onSuccess();
-      print('Estoques listados com sucesso.');
-    } else {
-      onFail('Falha ao listar Estoques.');
+    if (estoque == false) {
+      onFail('Falha ao criar estoque.');
     }
+
+    onSuccess();
+    print('Estoque criado com sucesso.');
   }
 }
